@@ -29,10 +29,19 @@
       width: 100%;
       height: 100%;
       z-index: 100;
-      background: #000 url("porta.jpg") center center / contain no-repeat;
+      display: block;
+      background: #000;
     }
 
-    /* TODA A TELA INICIAL É CLICÁVEL */
+    #coverImage {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    /* TODA A IMAGEM DA PORTA É CLICÁVEL */
     #hotspot {
       position: absolute;
       inset: 0;
@@ -61,10 +70,11 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+      object-position: center;
       background: #000;
     }
 
-    /* PRIMEIRA TELA APÓS O VÍDEO */
+    /* PRIMEIRA TELA */
     #screen1 {
       position: fixed;
       inset: 0;
@@ -72,7 +82,15 @@
       height: 100%;
       z-index: 10;
       display: none;
-      background: #000 url("tela1.jpg") center center / contain no-repeat;
+      background: #000;
+    }
+
+    #screen1Image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
     }
 
     #screen1Click {
@@ -83,6 +101,7 @@
       width: min(90vw, 360px);
       height: 18%;
       cursor: pointer;
+      z-index: 12;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
@@ -95,10 +114,18 @@
       height: 100%;
       z-index: 10;
       display: none;
-      background: #000 url("tela2.jpg") center center / contain no-repeat;
+      background: #000;
     }
 
-    /* ÁREAS CLICÁVEIS DOS QUATRO BOTÕES */
+    #screen2Image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    /* ÁREAS CLICÁVEIS DOS BOTÕES */
     #btnConfirmar,
     #btnMapa,
     #btnListaPresentes,
@@ -142,6 +169,12 @@
 
   <!-- PORTA INICIAL -->
   <div id="cover">
+    <img
+      id="coverImage"
+      src="porta.jpg"
+      alt="Porta do País das Maravilhas"
+    >
+
     <div
       id="hotspot"
       role="button"
@@ -150,7 +183,7 @@
     ></div>
   </div>
 
-  <!-- VÍDEO -->
+  <!-- VÍDEO DE ENTRADA -->
   <div id="videoContainer">
     <video
       id="video"
@@ -170,6 +203,12 @@
 
   <!-- TELA 1 -->
   <div id="screen1">
+    <img
+      id="screen1Image"
+      src="tela1.jpg"
+      alt="Convite para entrar no País das Maravilhas"
+    >
+
     <div
       id="screen1Click"
       role="button"
@@ -180,6 +219,11 @@
 
   <!-- CONVITE PRINCIPAL -->
   <div id="screen2">
+    <img
+      id="screen2Image"
+      src="tela2.jpg"
+      alt="Convite de aniversário de 15 anos de Anna Clara"
+    >
 
     <div
       id="btnConfirmar"
@@ -192,7 +236,7 @@
       id="btnMapa"
       role="button"
       tabindex="0"
-      aria-label="Como chegar ao evento"
+      aria-label="Como chegar"
     ></div>
 
     <div
@@ -208,12 +252,10 @@
       tabindex="0"
       aria-label="Informações de vestimenta"
     ></div>
-
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-
       const cover = document.getElementById("cover");
       const hotspot = document.getElementById("hotspot");
 
@@ -249,22 +291,18 @@
         music.volume = 0.4;
       }
 
-      /* CLIQUE E TECLADO */
       function ativarClique(elemento, acao) {
         elemento.addEventListener("click", acao);
 
         elemento.addEventListener("keydown", (evento) => {
-          if (
-            evento.key === "Enter" ||
-            evento.key === " "
-          ) {
+          if (evento.key === "Enter" || evento.key === " ") {
             evento.preventDefault();
             acao();
           }
         });
       }
 
-      /* PORTA → VÍDEO + MÚSICA */
+      /* PORTA → VÍDEO E MÚSICA */
       let iniciando = false;
 
       ativarClique(hotspot, () => {
@@ -278,26 +316,24 @@
 
         video.currentTime = 0;
 
-        /* Tentar iniciar a música no gesto do visitante */
+        const tentativaVideo = video.play();
+
         if (music) {
           music.play().catch((erro) => {
-            console.warn("A música não iniciou:", erro);
+            console.warn("Não foi possível iniciar a música:", erro);
           });
         }
 
-        /* Iniciar o vídeo */
-        const reproducao = video.play();
-
-        if (reproducao && typeof reproducao.catch === "function") {
-          reproducao.catch((erro) => {
-            console.error("Erro ao iniciar o vídeo:", erro);
+        if (tentativaVideo && typeof tentativaVideo.catch === "function") {
+          tentativaVideo.catch((erro) => {
+            console.error("Erro ao reproduzir o vídeo:", erro);
 
             videoContainer.style.display = "none";
             cover.style.display = "block";
             iniciando = false;
 
             alert(
-              "Não foi possível iniciar o vídeo. Verifique sua conexão e tente novamente."
+              "Não foi possível reproduzir o vídeo. Verifique sua conexão e tente novamente."
             );
           });
         }
@@ -346,7 +382,7 @@
       /* ERROS DE CARREGAMENTO */
       video.addEventListener("error", () => {
         console.error(
-          "Erro ao carregar video.mp4. Confira se o arquivo existe e se está codificado em um formato compatível."
+          "Erro ao carregar video.mp4. Confira se o arquivo existe e se está em formato compatível."
         );
       });
 
