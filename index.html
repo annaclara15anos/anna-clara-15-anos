@@ -53,10 +53,13 @@
       background: transparent;
     }
 
+    /* Áreas clicáveis dos quatro botões */
     .area {
       position: absolute;
       display: block;
       border: 0;
+      padding: 0;
+      margin: 0;
       background: transparent;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -69,38 +72,40 @@
       background: transparent;
     }
 
-    /* Áreas clicáveis do convite principal */
+    /*
+      POSIÇÃO DOS BOTÕES
+      Ajustada conforme os quadrados vermelhos enviados.
+    */
 
     #confirmar {
       left: 10%;
-      top: 53%;
-      width: 80%;
-      height: 9%;
+      top: 65.5%;
+      width: 20%;
+      height: 11.5%;
     }
 
     #comoChegar {
-      left: 10%;
-      top: 63%;
-      width: 80%;
-      height: 8%;
+      left: 30.5%;
+      top: 65.5%;
+      width: 20%;
+      height: 11.5%;
     }
 
     #presentes {
-      left: 10%;
-      top: 72%;
-      width: 80%;
-      height: 8%;
+      left: 51%;
+      top: 65.5%;
+      width: 20%;
+      height: 11.5%;
     }
 
     #vestimenta {
-      left: 10%;
-      top: 81%;
-      width: 80%;
-      height: 8%;
+      left: 71.5%;
+      top: 65.5%;
+      width: 20%;
+      height: 11.5%;
     }
 
     /* Botão para voltar da tela de vestimenta */
-
     #voltarVestimenta {
       position: absolute;
       top: 18px;
@@ -150,6 +155,7 @@
   <section id="screen2" class="tela">
     <img src="tela2.jpg" alt="Convite de 15 anos de Anna Clara">
 
+    <!-- Confirmar presença -->
     <a
       id="confirmar"
       class="area"
@@ -159,6 +165,7 @@
       aria-label="Confirmar presença">
     </a>
 
+    <!-- Como chegar -->
     <a
       id="comoChegar"
       class="area"
@@ -168,6 +175,7 @@
       aria-label="Como chegar">
     </a>
 
+    <!-- Lista de presentes -->
     <a
       id="presentes"
       class="area"
@@ -177,6 +185,7 @@
       aria-label="Lista de presentes">
     </a>
 
+    <!-- Informações de vestimenta -->
     <button
       id="vestimenta"
       class="area"
@@ -185,7 +194,7 @@
     </button>
   </section>
 
-  <!-- TELA 3: VESTIMENTA DENTRO DO MESMO SITE -->
+  <!-- TELA 3: VESTIMENTA -->
   <section id="screenVestimenta" class="tela">
     <img
       src="Vestimenta.jpg"
@@ -196,7 +205,7 @@
     </button>
   </section>
 
-  <!-- MÚSICA: PERMANECE NO INDEX DURANTE A NAVEGAÇÃO -->
+  <!-- MÚSICA DE FUNDO -->
   <audio id="music" src="musica.mp3" loop preload="auto"></audio>
 
   <script>
@@ -272,12 +281,10 @@
       }
     });
 
-    /* Abre a vestimenta sem recarregar a página */
     botaoVestimenta.addEventListener("click", function () {
       mostrarTela(screenVestimenta);
     });
 
-    /* Retorna ao convite sem reiniciar a música */
     botaoVoltar.addEventListener("click", function () {
       mostrarTela(screen2);
     });
