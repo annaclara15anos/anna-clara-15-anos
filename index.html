@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -33,8 +33,8 @@
     #hotspot {
       position: absolute;
       top: 20%;
-      left: 30%;
-      width: 40%;
+      left: 20%;
+      width: 60%;
       height: 60%;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -86,41 +86,52 @@
       background: #000 url("tela2.jpg") center / contain no-repeat;
     }
 
-    /* BOTÃO VESTIMENTA */
+    /* ÁREAS CLICÁVEIS DOS BOTÕES */
+    #btnConfirmar,
+    #btnMapa,
+    #btnListaPresentes,
     #btnVestimenta {
       position: absolute;
-      bottom: 20%;
-      left: 69%;
-      width: 80px;
-      height: 90px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* BOTÃO COMO CHEGAR */
+    /* CONFIRMAR PRESENÇA */
+    #btnConfirmar {
+      left: 7%;
+      bottom: 25%;
+      width: 26%;
+      height: 17%;
+    }
+
+    /* COMO CHEGAR */
     #btnMapa {
-      position: absolute;
-      bottom: 20%;
-      left: 31%;
-      width: 80px;
-      height: 90px;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
+      left: 34%;
+      bottom: 25%;
+      width: 15%;
+      height: 17%;
     }
 
-    /* AJUSTES PARA CELULARES */
-    @media (max-width: 600px) {
-      #hotspot {
-        top: 20%;
-        left: 20%;
-        width: 60%;
-        height: 60%;
-      }
+    /* LISTA DE PRESENTES */
+    #btnListaPresentes {
+      left: 49%;
+      bottom: 25%;
+      width: 25%;
+      height: 17%;
+    }
 
-      #btnVestimenta,
-      #btnMapa {
-        width: 15vw;
-        height: 12vh;
+    /* INFORMAÇÕES DE VESTIMENTA */
+    #btnVestimenta {
+      left: 74%;
+      bottom: 25%;
+      width: 23%;
+      height: 17%;
+    }
+
+    @media (max-width: 600px) {
+      #screen1Click {
+        width: 90vw;
+        height: 15vh;
       }
     }
   </style>
@@ -130,10 +141,15 @@
 
   <!-- PORTA -->
   <div id="cover">
-    <div id="hotspot" aria-label="Entrar no convite" role="button" tabindex="0"></div>
+    <div
+      id="hotspot"
+      role="button"
+      tabindex="0"
+      aria-label="Entrar no convite"
+    ></div>
   </div>
 
-  <!-- VÍDEO -->
+  <!-- VÍDEO DE ENTRADA -->
   <div id="videoContainer">
     <video
       id="video"
@@ -155,46 +171,44 @@
   <div id="screen1">
     <div
       id="screen1Click"
-      aria-label="Entrar no País das Maravilhas"
       role="button"
       tabindex="0"
+      aria-label="Entrar no País das Maravilhas"
     ></div>
   </div>
-  
-<!-- TELA 2 -->
-<div id="screen2">
-  <div
-    id="btnVestimenta"
-    aria-label="Informações de vestimenta"
-    role="button"
-    tabindex="0"
-  ></div>
 
-  <div
-    id="btnMapa"
-    aria-label="Como chegar"
-    role="button"
-    tabindex="0"
-  ></div>
+  <!-- CONVITE PRINCIPAL -->
+  <div id="screen2">
 
-  <div
-    id="btnConfirmar"
-    aria-label="Confirmar presença"
-    role="button"
-    tabindex="0"
-  ></div>
+    <div
+      id="btnConfirmar"
+      role="button"
+      tabindex="0"
+      aria-label="Confirmar presença"
+    ></div>
 
-  <div
-    id="btnListaPresentes"
-    aria-label="Lista de presentes"
-    role="button"
-    tabindex="0"
-  ></div>
-</div>
+    <div
+      id="btnMapa"
+      role="button"
+      tabindex="0"
+      aria-label="Como chegar"
+    ></div>
 
-  
+    <div
+      id="btnListaPresentes"
+      role="button"
+      tabindex="0"
+      aria-label="Lista de presentes"
+    ></div>
 
-  
+    <div
+      id="btnVestimenta"
+      role="button"
+      tabindex="0"
+      aria-label="Informações de vestimenta"
+    ></div>
+
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -208,20 +222,31 @@
 
       const screen1 = document.getElementById("screen1");
       const screen1Click = document.getElementById("screen1Click");
-
       const screen2 = document.getElementById("screen2");
 
-      const btnVestimenta = document.getElementById("btnVestimenta");
+      const btnConfirmar = document.getElementById("btnConfirmar");
       const btnMapa = document.getElementById("btnMapa");
+      const btnListaPresentes = document.getElementById("btnListaPresentes");
+      const btnVestimenta = document.getElementById("btnVestimenta");
 
-      const mapaURL =
-        "https://www.google.com/maps/place/Espa%C3%A7o+Lara/@-19.7419054,-43.9989479,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa68fa3df01b32b:0x22038fde363a0af1!8m2!3d-19.7419054!4d-43.9989479!16s%2Fg%2F11x20y1t75?entry=ttu";
+      const links = {
+        confirmar:
+          "https://www.felicitous.com.br/annaclara15anos",
+
+        presentes:
+          "https://www.felicitous.com.br/annaclara15anos#lista-presentes",
+
+        mapa:
+          "https://www.google.com/maps/place/Espa%C3%A7o+Lara/@-19.7419054,-43.9989479,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa68fa3df01b32b:0x22038fde363a0af1!8m2!3d-19.7419054!4d-43.9989479!16s%2Fg%2F11x20y1t75?entry=ttu",
+
+        vestimenta: "vestimenta.html"
+      };
 
       if (music) {
         music.volume = 0.4;
       }
 
-      function ativarElemento(elemento, acao) {
+      function ativarClique(elemento, acao) {
         elemento.addEventListener("click", acao);
 
         elemento.addEventListener("keydown", (evento) => {
@@ -232,22 +257,20 @@
         });
       }
 
-      /* PORTA → VÍDEO */
-      ativarElemento(hotspot, async () => {
+      /* PORTA → VÍDEO E MÚSICA */
+      ativarClique(hotspot, async () => {
         cover.style.display = "none";
         screen1.style.display = "none";
         screen2.style.display = "none";
-
         videoContainer.style.display = "block";
 
         video.currentTime = 0;
 
         const tentativaVideo = video.play();
 
-        /* Inicia a música no clique do visitante */
         if (music) {
           music.play().catch((erro) => {
-            console.warn("Não foi possível iniciar a música:", erro);
+            console.warn("A música não pôde iniciar:", erro);
           });
         }
 
@@ -256,16 +279,63 @@
         } catch (erro) {
           console.error("Erro ao reproduzir o vídeo:", erro);
 
+          videoContainer.style.display = "none";
+          cover.style.display = "block";
+
           alert(
             "Não foi possível reproduzir o vídeo. Verifique sua conexão e tente novamente."
           );
-
-          videoContainer.style.display = "none";
-          cover.style.display = "block";
         }
       });
 
       /* VÍDEO → TELA 1 */
       video.addEventListener("ended", () => {
         videoContainer.style.display = "none";
-        screen1.style
+        screen1.style.display = "block";
+
+        if (music) {
+          music.play().catch(() => {});
+        }
+      });
+
+      /* TELA 1 → TELA 2 */
+      ativarClique(screen1Click, () => {
+        screen1.style.display = "none";
+        screen2.style.display = "block";
+
+        if (music) {
+          music.play().catch(() => {});
+        }
+      });
+
+      /* CONFIRMAR PRESENÇA */
+      ativarClique(btnConfirmar, () => {
+        window.open(links.confirmar, "_blank", "noopener");
+      });
+
+      /* COMO CHEGAR */
+      ativarClique(btnMapa, () => {
+        window.open(links.mapa, "_blank", "noopener");
+      });
+
+      /* LISTA DE PRESENTES */
+      ativarClique(btnListaPresentes, () => {
+        window.open(links.presentes, "_blank", "noopener");
+      });
+
+      /* INFORMAÇÕES DE VESTIMENTA */
+      ativarClique(btnVestimenta, () => {
+        window.location.href = links.vestimenta;
+      });
+
+      /* ERRO DE CARREGAMENTO DO VÍDEO */
+      video.addEventListener("error", () => {
+        console.error(
+          "Não foi possível carregar video.mp4. Verifique o arquivo e sua codificação."
+        );
+      });
+    });
+  </script>
+
+</body>
+</html>
