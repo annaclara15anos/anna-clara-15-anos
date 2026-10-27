@@ -23,23 +23,28 @@
     }
 
     /* PORTA INICIAL */
-    #cover {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 100;
-      display: block;
-      background: #000;
-    }
+    
+  #cover {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 100;
+    display: block;
+    overflow: hidden;
+    background: #000;
+  }
+
 
     #coverImage {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  }
 
     /* TODA A IMAGEM DA PORTA É CLICÁVEL */
     #hotspot {
