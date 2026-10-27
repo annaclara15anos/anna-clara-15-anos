@@ -69,8 +69,7 @@
       background: transparent;
     }
 
-    /* Áreas clicáveis da tela principal.
-       Ajuste as posições caso não coincidam com os textos da imagem. */
+    /* Áreas clicáveis do convite principal */
 
     #confirmar {
       left: 10%;
@@ -99,12 +98,28 @@
       width: 80%;
       height: 8%;
     }
+
+    /* Botão para voltar da tela de vestimenta */
+
+    #voltarVestimenta {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 10;
+      padding: 12px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- TELA INICIAL: SOMENTE O VÍDEO, SEM IMAGEM DE CAPA -->
+  <!-- TELA INICIAL: VÍDEO -->
   <section id="videoContainer" class="tela">
     <video id="video" playsinline preload="auto">
       <source src="video.mp4" type="video/mp4">
@@ -119,9 +134,10 @@
     </div>
   </section>
 
-  <!-- PRIMEIRA TELA APÓS O VÍDEO -->
+  <!-- TELA 1: ENTRADA NO PAÍS DAS MARAVILHAS -->
   <section id="screen1" class="tela">
     <img src="tela1.jpg" alt="Entre no País das Maravilhas">
+
     <div
       id="screen1Click"
       role="button"
@@ -130,7 +146,7 @@
     </div>
   </section>
 
-  <!-- TELA PRINCIPAL DO CONVITE -->
+  <!-- TELA 2: CONVITE PRINCIPAL -->
   <section id="screen2" class="tela">
     <img src="tela2.jpg" alt="Convite de 15 anos de Anna Clara">
 
@@ -161,46 +177,72 @@
       aria-label="Lista de presentes">
     </a>
 
-    <a
+    <button
       id="vestimenta"
       class="area"
-      href="vestimenta.html"
+      type="button"
       aria-label="Informações de vestimenta">
-    </a>
+    </button>
   </section>
 
-  <!-- MÚSICA DE FUNDO -->
+  <!-- TELA 3: VESTIMENTA DENTRO DO MESMO SITE -->
+  <section id="screenVestimenta" class="tela">
+    <img
+      src="Vestimenta.jpg"
+      alt="Informações de vestimenta para o aniversário de Anna Clara">
+
+    <button id="voltarVestimenta" type="button">
+      ← Voltar ao convite
+    </button>
+  </section>
+
+  <!-- MÚSICA: PERMANECE NO INDEX DURANTE A NAVEGAÇÃO -->
   <audio id="music" src="musica.mp3" loop preload="auto"></audio>
 
   <script>
     const video = document.getElementById("video");
     const music = document.getElementById("music");
+
     const videoContainer = document.getElementById("videoContainer");
     const hotspot = document.getElementById("hotspot");
+
     const screen1 = document.getElementById("screen1");
     const screen2 = document.getElementById("screen2");
+    const screenVestimenta = document.getElementById("screenVestimenta");
+
     const screen1Click = document.getElementById("screen1Click");
+    const botaoVestimenta = document.getElementById("vestimenta");
+    const botaoVoltar = document.getElementById("voltarVestimenta");
 
     let iniciado = false;
 
+    function mostrarTela(tela) {
+      videoContainer.style.display = "none";
+      screen1.style.display = "none";
+      screen2.style.display = "none";
+      screenVestimenta.style.display = "none";
+
+      tela.style.display = "block";
+    }
+
     function iniciarConvite() {
       if (iniciado) return;
-      iniciado = true;
 
+      iniciado = true;
       hotspot.style.display = "none";
 
-      video.muted = false;
+      music.volume = 0.7;
+
+      music.play().catch(function (erro) {
+        console.warn("Não foi possível iniciar a música:", erro);
+      });
+
       video.currentTime = 0;
 
       video.play().catch(function (erro) {
         console.error("Não foi possível iniciar o vídeo:", erro);
         iniciado = false;
         hotspot.style.display = "block";
-      });
-
-      music.volume = 0.7;
-      music.play().catch(function (erro) {
-        console.warn("Não foi possível iniciar a música:", erro);
       });
     }
 
@@ -214,13 +256,11 @@
     });
 
     video.addEventListener("ended", function () {
-      videoContainer.style.display = "none";
-      screen1.style.display = "block";
+      mostrarTela(screen1);
     });
 
     function entrarNoConvite() {
-      screen1.style.display = "none";
-      screen2.style.display = "block";
+      mostrarTela(screen2);
     }
 
     screen1Click.addEventListener("click", entrarNoConvite);
@@ -230,6 +270,16 @@
         evento.preventDefault();
         entrarNoConvite();
       }
+    });
+
+    /* Abre a vestimenta sem recarregar a página */
+    botaoVestimenta.addEventListener("click", function () {
+      mostrarTela(screenVestimenta);
+    });
+
+    /* Retorna ao convite sem reiniciar a música */
+    botaoVoltar.addEventListener("click", function () {
+      mostrarTela(screen2);
     });
   </script>
 
