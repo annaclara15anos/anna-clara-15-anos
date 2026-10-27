@@ -1,186 +1,253 @@
+```html
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convite</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Convite — Anna Clara</title>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{overflow:hidden;background:#000;}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* PORTA */
-#cover{
-  position:fixed;
-  inset:0;
-  background:url('porta.jpg') center/cover no-repeat;
-}
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
 
-/* HOTSPOT */
-#hotspot{
-  position:absolute;
-  top:20%;
-  left:30%;
-  width:40%;
-  height:60%;
-  cursor:pointer;
-}
+    /* PORTA INICIAL */
+    #cover {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: #000 url("porta.jpg") center / contain no-repeat;
+    }
 
-/* VIDEO */
-#videoContainer{
-  position:fixed;
-  inset:0;
-  display:none;
-}
-video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    #hotspot {
+      position: absolute;
+      top: 20%;
+      left: 30%;
+      width: 40%;
+      height: 60%;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-/* TELA 1 */
-#screen1{
-  position:fixed;
-  inset:0;
-  background:url('tela1.jpg') center/cover no-repeat;
-  display:none;
-}
-#screen1Click{
-  position:absolute;
-  top:60%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:300px;
-  height:120px;
-  cursor:pointer;
-}
+    /* VÍDEO DE ENTRADA */
+    #videoContainer {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      background: #000;
+    }
 
-/* TELA 2 */
-#screen2{
-  position:fixed;
-  inset:0;
-  background:url('tela2.jpg') center/cover no-repeat;
-  display:none;
-}
+    #video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
 
-/* BOTÕES */
-#btnVestimenta{
-  position:absolute;
-  bottom:20%;
-  left:69%;
-  width:80px;
-  height:90px;
-  cursor:pointer;
-}
+    /* PRIMEIRA TELA */
+    #screen1 {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: none;
+      background: #000 url("tela1.jpg") center / contain no-repeat;
+    }
 
-#btnMapa{
-  position:absolute;
-  bottom:20%;
-  left:31%;
-  width:80px;
-  height:90px;
-  cursor:pointer;
-}
-</style>
+    #screen1Click {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(80vw, 340px);
+      height: 120px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* CONVITE PRINCIPAL */
+    #screen2 {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: none;
+      background: #000 url("tela2.jpg") center / contain no-repeat;
+    }
+
+    /* BOTÃO VESTIMENTA */
+    #btnVestimenta {
+      position: absolute;
+      bottom: 20%;
+      left: 69%;
+      width: 80px;
+      height: 90px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* BOTÃO COMO CHEGAR */
+    #btnMapa {
+      position: absolute;
+      bottom: 20%;
+      left: 31%;
+      width: 80px;
+      height: 90px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* AJUSTES PARA CELULARES */
+    @media (max-width: 600px) {
+      #hotspot {
+        top: 20%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+      }
+
+      #btnVestimenta,
+      #btnMapa {
+        width: 15vw;
+        height: 12vh;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- PORTA -->
-<div id="cover">
-  <div id="hotspot"></div>
-</div>
+  <!-- PORTA -->
+  <div id="cover">
+    <div id="hotspot" aria-label="Entrar no convite" role="button" tabindex="0"></div>
+  </div>
 
-<!-- VIDEO -->
-<div id="videoContainer">
-  <video id="video" playsinline>
-    <source src="video.mp4" type="video/mp4">
-  </video>
-</div>
+  <!-- VÍDEO -->
+  <div id="videoContainer">
+    <video
+      id="video"
+      playsinline
+      webkit-playsinline
+      preload="auto"
+    >
+      <source src="video.mp4" type="video/mp4">
+      Seu navegador não conseguiu carregar o vídeo.
+    </video>
+  </div>
 
-<!-- AUDIO -->
-<audio id="bgMusic" loop preload="auto" playsinline>
-  <source src="musica.mp3" type="audio/mpeg">
-</audio>
+  <!-- MÚSICA DE FUNDO -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
 
-<!-- TELA 1 -->
-<div id="screen1">
-  <div id="screen1Click"></div>
-</div>
+  <!-- TELA 1 -->
+  <div id="screen1">
+    <div
+      id="screen1Click"
+      aria-label="Entrar no País das Maravilhas"
+      role="button"
+      tabindex="0"
+    ></div>
+  </div>
 
-<!-- TELA 2 -->
-<div id="screen2">
-  <div id="btnVestimenta"></div>
-  <div id="btnMapa"></div>
-</div>
+  <!-- TELA 2 -->
+  <div id="screen2">
+    <div
+      id="btnVestimenta"
+      aria-label="Informações de vestimenta"
+      role="button"
+      tabindex="0"
+    ></div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+    <div
+      id="btnMapa"
+      aria-label="Como chegar"
+      role="button"
+      tabindex="0"
+    ></div>
+  </div>
 
-  const hotspot = document.getElementById('hotspot');
-  const video = document.getElementById('video');
-  const videoContainer = document.getElementById('videoContainer');
-  const cover = document.getElementById('cover');
-  const screen1 = document.getElementById('screen1');
-  const screen1Click = document.getElementById('screen1Click');
-  const screen2 = document.getElementById('screen2');
-  const music = document.getElementById('bgMusic');
-  const btnVestimenta = document.getElementById('btnVestimenta');
-  const btnMapa = document.getElementById('btnMapa');
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const cover = document.getElementById("cover");
+      const hotspot = document.getElementById("hotspot");
 
-  if (music) {
-    music.volume = 0.4;
-  }
+      const videoContainer = document.getElementById("videoContainer");
+      const video = document.getElementById("video");
 
-  let audioUnlocked = false;
+      const music = document.getElementById("bgMusic");
 
-  function unlockAudio() {
-    if (audioUnlocked || !music) return;
-    audioUnlocked = true;
-    music.play().catch(() => {});
-  }
+      const screen1 = document.getElementById("screen1");
+      const screen1Click = document.getElementById("screen1Click");
 
-  /* PORTA → VIDEO */
-  hotspot.onclick = () => {
-    unlockAudio();
+      const screen2 = document.getElementById("screen2");
 
-    cover.style.display = "none";
-    videoContainer.style.display = "block";
+      const btnVestimenta = document.getElementById("btnVestimenta");
+      const btnMapa = document.getElementById("btnMapa");
 
-    video.play();
-  };
+      const mapaURL =
+        "https://www.google.com/maps/place/Espa%C3%A7o+Lara/@-19.7419054,-43.9989479,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa68fa3df01b32b:0x22038fde363a0af1!8m2!3d-19.7419054!4d-43.9989479!16s%2Fg%2F11x20y1t75?entry=ttu";
 
-  /* VIDEO → TELA 1 */
-  video.onended = () => {
-    videoContainer.style.display = "none";
-    screen1.style.display = "block";
+      if (music) {
+        music.volume = 0.4;
+      }
 
-    if (music) music.play().catch(()=>{});
-  };
+      function ativarElemento(elemento, acao) {
+        elemento.addEventListener("click", acao);
 
-  /* TELA 1 → TELA 2 */
-  screen1Click.onclick = () => {
-    screen1.style.display = "none";
-    screen2.style.display = "block";
+        elemento.addEventListener("keydown", (evento) => {
+          if (evento.key === "Enter" || evento.key === " ") {
+            evento.preventDefault();
+            acao();
+          }
+        });
+      }
 
-    if (music) music.play().catch(()=>{});
-  };
+      /* PORTA → VÍDEO */
+      ativarElemento(hotspot, async () => {
+        cover.style.display = "none";
+        screen1.style.display = "none";
+        screen2.style.display = "none";
 
-  /* BOTÕES */
-  if (btnVestimenta) {
-    btnVestimenta.onclick = () => {
-      window.open("vestimenta.html", "_blank");
-    };
-  }
+        videoContainer.style.display = "block";
 
-  if (btnMapa) {
-    btnMapa.onclick = () => {
-      window.open("https://www.google.com/maps/place/Espa%C3%A7o+Lara/@-19.7419054,-43.9989479,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa68fa3df01b32b:0x22038fde363a0af1!8m2!3d-19.7419054!4d-43.9989479!16s%2Fg%2F11x20y1t75?entry=ttu","_blank");
-    };
-  }
+        video.currentTime = 0;
 
-});
-</script>
+        const tentativaVideo = video.play();
 
-</body>
-</html>
+        /* Inicia a música no clique do visitante */
+        if (music) {
+          music.play().catch((erro) => {
+            console.warn("Não foi possível iniciar a música:", erro);
+          });
+        }
+
+        try {
+          await tentativaVideo;
+        } catch (erro) {
+          console.error("Erro ao reproduzir o vídeo:", erro);
+
+          alert(
+            "Não foi possível reproduzir o vídeo. Verifique sua conexão e tente novamente."
+          );
+
+          videoContainer.style.display = "none";
+          cover.style.display = "block";
+        }
+      });
+
+      /* VÍDEO → TELA 1 */
+      video.addEventListener("ended", () => {
+        videoContainer.style.display = "none";
+        screen1.style
