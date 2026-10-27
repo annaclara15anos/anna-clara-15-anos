@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
-  <title>Convite — Anna Clara</title>
+  <title>Convite — Anna Clara | 15 anos</title>
 
   <style>
     * {
@@ -26,27 +26,32 @@
     #cover {
       position: fixed;
       inset: 0;
-      z-index: 1;
-      background: #000 url("porta.jpg") center / contain no-repeat;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      background: #000 url("porta.jpg") center center / contain no-repeat;
     }
 
-    
-#hotspot {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  z-index: 5;
-  -webkit-tap-highlight-color: transparent;
-}
-
+    /* TODA A TELA INICIAL É CLICÁVEL */
+    #hotspot {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 101;
+      cursor: pointer;
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
 
     /* VÍDEO DE ENTRADA */
     #videoContainer {
       position: fixed;
       inset: 0;
-      z-index: 10;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
       display: none;
       background: #000;
     }
@@ -59,13 +64,15 @@
       background: #000;
     }
 
-    /* PRIMEIRA TELA */
+    /* PRIMEIRA TELA APÓS O VÍDEO */
     #screen1 {
       position: fixed;
       inset: 0;
-      z-index: 2;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
       display: none;
-      background: #000 url("tela1.jpg") center / contain no-repeat;
+      background: #000 url("tela1.jpg") center center / contain no-repeat;
     }
 
     #screen1Click {
@@ -73,85 +80,77 @@
       top: 60%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: min(80vw, 340px);
-      height: 120px;
+      width: min(90vw, 360px);
+      height: 18%;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     /* CONVITE PRINCIPAL */
     #screen2 {
       position: fixed;
       inset: 0;
-      z-index: 2;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
       display: none;
-      background: #000 url("tela2.jpg") center / contain no-repeat;
+      background: #000 url("tela2.jpg") center center / contain no-repeat;
     }
 
-    /* ÁREAS CLICÁVEIS DOS BOTÕES */
+    /* ÁREAS CLICÁVEIS DOS QUATRO BOTÕES */
     #btnConfirmar,
     #btnMapa,
     #btnListaPresentes,
     #btnVestimenta {
       position: absolute;
+      bottom: 24%;
+      height: 18%;
+      z-index: 11;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     /* CONFIRMAR PRESENÇA */
     #btnConfirmar {
       left: 7%;
-      bottom: 25%;
-      width: 26%;
-      height: 17%;
+      width: 27%;
     }
 
     /* COMO CHEGAR */
     #btnMapa {
       left: 34%;
-      bottom: 25%;
       width: 15%;
-      height: 17%;
     }
 
     /* LISTA DE PRESENTES */
     #btnListaPresentes {
       left: 49%;
-      bottom: 25%;
       width: 25%;
-      height: 17%;
     }
 
     /* INFORMAÇÕES DE VESTIMENTA */
     #btnVestimenta {
       left: 74%;
-      bottom: 25%;
-      width: 23%;
-      height: 17%;
-    }
-
-    @media (max-width: 600px) {
-      #screen1Click {
-        width: 90vw;
-        height: 15vh;
-      }
+      width: 24%;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PORTA -->
+  <!-- PORTA INICIAL -->
   <div id="cover">
     <div
       id="hotspot"
       role="button"
       tabindex="0"
-      aria-label="Entrar no convite"
+      aria-label="Clique para entrar no País das Maravilhas"
     ></div>
   </div>
 
-  <!-- VÍDEO DE ENTRADA -->
+  <!-- VÍDEO -->
   <div id="videoContainer">
     <video
       id="video"
@@ -193,7 +192,7 @@
       id="btnMapa"
       role="button"
       tabindex="0"
-      aria-label="Como chegar"
+      aria-label="Como chegar ao evento"
     ></div>
 
     <div
@@ -214,6 +213,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+
       const cover = document.getElementById("cover");
       const hotspot = document.getElementById("hotspot");
 
@@ -228,7 +228,8 @@
 
       const btnConfirmar = document.getElementById("btnConfirmar");
       const btnMapa = document.getElementById("btnMapa");
-      const btnListaPresentes = document.getElementById("btnListaPresentes");
+      const btnListaPresentes =
+        document.getElementById("btnListaPresentes");
       const btnVestimenta = document.getElementById("btnVestimenta");
 
       const links = {
@@ -248,19 +249,28 @@
         music.volume = 0.4;
       }
 
+      /* CLIQUE E TECLADO */
       function ativarClique(elemento, acao) {
         elemento.addEventListener("click", acao);
 
         elemento.addEventListener("keydown", (evento) => {
-          if (evento.key === "Enter" || evento.key === " ") {
+          if (
+            evento.key === "Enter" ||
+            evento.key === " "
+          ) {
             evento.preventDefault();
             acao();
           }
         });
       }
 
-      /* PORTA → VÍDEO E MÚSICA */
-      ativarClique(hotspot, async () => {
+      /* PORTA → VÍDEO + MÚSICA */
+      let iniciando = false;
+
+      ativarClique(hotspot, () => {
+        if (iniciando) return;
+        iniciando = true;
+
         cover.style.display = "none";
         screen1.style.display = "none";
         screen2.style.display = "none";
@@ -268,25 +278,28 @@
 
         video.currentTime = 0;
 
-        const tentativaVideo = video.play();
-
+        /* Tentar iniciar a música no gesto do visitante */
         if (music) {
           music.play().catch((erro) => {
-            console.warn("A música não pôde iniciar:", erro);
+            console.warn("A música não iniciou:", erro);
           });
         }
 
-        try {
-          await tentativaVideo;
-        } catch (erro) {
-          console.error("Erro ao reproduzir o vídeo:", erro);
+        /* Iniciar o vídeo */
+        const reproducao = video.play();
 
-          videoContainer.style.display = "none";
-          cover.style.display = "block";
+        if (reproducao && typeof reproducao.catch === "function") {
+          reproducao.catch((erro) => {
+            console.error("Erro ao iniciar o vídeo:", erro);
 
-          alert(
-            "Não foi possível reproduzir o vídeo. Verifique sua conexão e tente novamente."
-          );
+            videoContainer.style.display = "none";
+            cover.style.display = "block";
+            iniciando = false;
+
+            alert(
+              "Não foi possível iniciar o vídeo. Verifique sua conexão e tente novamente."
+            );
+          });
         }
       });
 
@@ -300,7 +313,7 @@
         }
       });
 
-      /* TELA 1 → TELA 2 */
+      /* TELA 1 → CONVITE PRINCIPAL */
       ativarClique(screen1Click, () => {
         screen1.style.display = "none";
         screen2.style.display = "block";
@@ -330,12 +343,14 @@
         window.location.href = links.vestimenta;
       });
 
-      /* ERRO DE CARREGAMENTO DO VÍDEO */
+      /* ERROS DE CARREGAMENTO */
       video.addEventListener("error", () => {
         console.error(
-          "Não foi possível carregar video.mp4. Verifique o arquivo e sua codificação."
+          "Erro ao carregar video.mp4. Confira se o arquivo existe e se está codificado em um formato compatível."
         );
       });
+
+      console.log("Convite carregado. Aguardando clique na porta.");
     });
   </script>
 
