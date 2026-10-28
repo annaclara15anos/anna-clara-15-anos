@@ -3,11 +3,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
-  <title>Convite de 15 anos — Anna Clara</title>
+  <title>Anna Clara | 15 Anos</title>
 
   <style>
+    :root {
+      --fundo: #000;
+      --texto: #fff;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -19,8 +24,10 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #000;
+      background: var(--fundo);
       font-family: Arial, sans-serif;
+      -webkit-text-size-adjust: 100%;
+      overscroll-behavior: none;
     }
 
     .tela {
@@ -28,96 +35,139 @@
       inset: 0;
       width: 100%;
       height: 100%;
+      height: 100dvh;
       display: none;
-      background: #000;
+      overflow: hidden;
+      background: var(--fundo);
     }
 
-    .tela img,
+    /* Área da imagem: mantém a proporção original */
+    .palco {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      overflow: hidden;
+      background: var(--fundo);
+    }
+
+    .palco img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    /* Vídeo inicial */
+    #videoContainer {
+      display: block;
+    }
+
     #video {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-    }
-
-    #videoContainer {
-      display: block;
+      background: #000;
     }
 
     #hotspot {
       position: absolute;
       inset: 0;
       z-index: 5;
-      cursor: pointer;
-      background: transparent;
-    }
-
-    /* Áreas clicáveis dos quatro botões */
-    .area {
-      position: absolute;
-      display: block;
       border: 0;
-      padding: 0;
-      margin: 0;
       background: transparent;
       cursor: pointer;
+      touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
 
-    #screen1Click {
+    /* Áreas clicáveis relativas à imagem do convite */
+    .area {
       position: absolute;
-      inset: 0;
-      cursor: pointer;
+      display: block;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
       background: transparent;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      appearance: none;
+      -webkit-appearance: none;
     }
 
     /*
-      POSIÇÃO DOS BOTÕES
-      Ajustada conforme os quadrados vermelhos enviados.
+      POSIÇÃO DOS BOTÕES SOBRE A IMAGEM
+      As porcentagens são relativas ao palco da imagem,
+      e não à tela inteira do iPhone.
     */
 
     #confirmar {
-      left: 10%;
+      left: 11.2%;
       top: 65.5%;
-      width: 20%;
+      width: 19.8%;
       height: 11.5%;
     }
 
     #comoChegar {
-      left: 30.5%;
+      left: 31.7%;
       top: 65.5%;
-      width: 20%;
+      width: 19.8%;
       height: 11.5%;
     }
 
     #presentes {
-      left: 51%;
+      left: 52.2%;
       top: 65.5%;
-      width: 20%;
+      width: 19.8%;
       height: 11.5%;
     }
 
     #vestimenta {
-      left: 71.5%;
+      left: 72.7%;
       top: 65.5%;
-      width: 20%;
+      width: 18.8%;
       height: 11.5%;
     }
 
-    /* Botão para voltar da tela de vestimenta */
-    #voltarVestimenta {
+    /* Clique para avançar da primeira tela */
+    #screen1Click {
       position: absolute;
-      top: 18px;
-      left: 18px;
-      z-index: 10;
-      padding: 12px 18px;
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-radius: 6px;
-      background: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      font-size: 14px;
+      inset: 0;
+      border: 0;
+      background: transparent;
       cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Botão de retorno da tela de vestimenta */
+    #voltarVestimenta {
+      position: fixed;
+      z-index: 20;
+      top: max(12px, env(safe-area-inset-top));
+      left: max(12px, env(safe-area-inset-left));
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.78);
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.2;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 2px;
     }
   </style>
 </head>
@@ -125,80 +175,95 @@
 <body>
 
   <!-- TELA INICIAL: VÍDEO -->
-  <section id="videoContainer" class="tela">
-    <video id="video" playsinline preload="auto">
+  <section id="videoContainer" class="tela" aria-label="Abertura do convite">
+    <video
+      id="video"
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      aria-label="Vídeo de abertura do convite">
       <source src="video.mp4" type="video/mp4">
-      Seu navegador não consegue reproduzir este vídeo.
+      Seu navegador não conseguiu reproduzir este vídeo.
     </video>
 
-    <div
+    <button
       id="hotspot"
-      role="button"
-      tabindex="0"
-      aria-label="Clique para iniciar o convite">
-    </div>
+      type="button"
+      aria-label="Toque para iniciar o vídeo e a música">
+    </button>
   </section>
 
-  <!-- TELA 1: ENTRADA NO PAÍS DAS MARAVILHAS -->
-  <section id="screen1" class="tela">
-    <img src="tela1.jpg" alt="Entre no País das Maravilhas">
+  <!-- TELA 1 -->
+  <section id="screen1" class="tela" aria-label="Entrada no País das Maravilhas">
+    <div class="palco" id="palco1">
+      <img
+        id="imagem1"
+        src="tela1.jpg"
+        alt="Entre no País das Maravilhas"
+        draggable="false">
 
-    <div
-      id="screen1Click"
-      role="button"
-      tabindex="0"
-      aria-label="Entrar no convite">
+      <button
+        id="screen1Click"
+        type="button"
+        aria-label="Avançar para o convite">
+      </button>
     </div>
   </section>
 
   <!-- TELA 2: CONVITE PRINCIPAL -->
-  <section id="screen2" class="tela">
-    <img src="tela2.jpg" alt="Convite de 15 anos de Anna Clara">
+  <section id="screen2" class="tela" aria-label="Convite de aniversário">
+    <div class="palco" id="palco2">
+      <img
+        id="imagem2"
+        src="tela2.jpg"
+        alt="Convite de 15 anos de Anna Clara"
+        draggable="false">
 
-    <!-- Confirmar presença -->
-    <a
-      id="confirmar"
-      class="area"
-      href="https://www.felicitous.com.br/annaclara15anos"
-      target="_blank"
-      rel="noopener"
-      aria-label="Confirmar presença">
-    </a>
+      <a
+        id="confirmar"
+        class="area"
+        href="https://www.felicitous.com.br/annaclara15anos"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Confirmar presença">
+      </a>
 
-    <!-- Como chegar -->
-    <a
-      id="comoChegar"
-      class="area"
-      href="https://www.google.com/maps/place/Espa%C3%A7o+Lara/@-19.7419054,-43.9989479,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa68fa3df01b32b:0x22038fde363a0af1!8m2!3d-19.7419054!4d-43.9989479!16s%2Fg%2F11x20y1t75?entry=ttu"
-      target="_blank"
-      rel="noopener"
-      aria-label="Como chegar">
-    </a>
+      <a
+        id="comoChegar"
+        class="area"
+        href="https://www.google.com/maps/place/Espa%C3%A7o+Lara/@-19.7419054,-43.9989479,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa68fa3df01b32b:0x22038fde363a0af1!8m2!3d-19.7419054!4d-43.9989479!16s%2Fg%2F11x20y1t75?entry=ttu"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Como chegar ao Espaço Lara">
+      </a>
 
-    <!-- Lista de presentes -->
-    <a
-      id="presentes"
-      class="area"
-      href="https://www.felicitous.com.br/annaclara15anos#lista-presentes"
-      target="_blank"
-      rel="noopener"
-      aria-label="Lista de presentes">
-    </a>
+      <a
+        id="presentes"
+        class="area"
+        href="https://www.felicitous.com.br/annaclara15anos#lista-presentes"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Lista de presentes">
+      </a>
 
-    <!-- Informações de vestimenta -->
-    <button
-      id="vestimenta"
-      class="area"
-      type="button"
-      aria-label="Informações de vestimenta">
-    </button>
+      <button
+        id="vestimenta"
+        class="area"
+        type="button"
+        aria-label="Ver informações de vestimenta">
+      </button>
+    </div>
   </section>
 
-  <!-- TELA 3: VESTIMENTA -->
-  <section id="screenVestimenta" class="tela">
-    <img
-      src="Vestimenta.jpg"
-      alt="Informações de vestimenta para o aniversário de Anna Clara">
+  <!-- TELA 3: VESTIMENTA NO MESMO SITE -->
+  <section id="screenVestimenta" class="tela" aria-label="Informações de vestimenta">
+    <div class="palco" id="palcoVestimenta">
+      <img
+        id="imagemVestimenta"
+        src="Vestimenta.jpg"
+        alt="Informações de vestimenta para o aniversário de Anna Clara"
+        draggable="false">
+    </div>
 
     <button id="voltarVestimenta" type="button">
       ← Voltar ao convite
@@ -209,85 +274,162 @@
   <audio id="music" src="musica.mp3" loop preload="auto"></audio>
 
   <script>
-    const video = document.getElementById("video");
-    const music = document.getElementById("music");
+    (function () {
+      "use strict";
 
-    const videoContainer = document.getElementById("videoContainer");
-    const hotspot = document.getElementById("hotspot");
+      const video = document.getElementById("video");
+      const music = document.getElementById("music");
 
-    const screen1 = document.getElementById("screen1");
-    const screen2 = document.getElementById("screen2");
-    const screenVestimenta = document.getElementById("screenVestimenta");
+      const videoContainer = document.getElementById("videoContainer");
+      const hotspot = document.getElementById("hotspot");
 
-    const screen1Click = document.getElementById("screen1Click");
-    const botaoVestimenta = document.getElementById("vestimenta");
-    const botaoVoltar = document.getElementById("voltarVestimenta");
+      const screen1 = document.getElementById("screen1");
+      const screen2 = document.getElementById("screen2");
+      const screenVestimenta = document.getElementById("screenVestimenta");
 
-    let iniciado = false;
+      const imagem1 = document.getElementById("imagem1");
+      const imagem2 = document.getElementById("imagem2");
+      const imagemVestimenta = document.getElementById("imagemVestimenta");
 
-    function mostrarTela(tela) {
-      videoContainer.style.display = "none";
-      screen1.style.display = "none";
-      screen2.style.display = "none";
-      screenVestimenta.style.display = "none";
+      const palco1 = document.getElementById("palco1");
+      const palco2 = document.getElementById("palco2");
+      const palcoVestimenta = document.getElementById("palcoVestimenta");
 
-      tela.style.display = "block";
-    }
+      const botaoAvancar = document.getElementById("screen1Click");
+      const botaoVestimenta = document.getElementById("vestimenta");
+      const botaoVoltar = document.getElementById("voltarVestimenta");
 
-    function iniciarConvite() {
-      if (iniciado) return;
+      let iniciado = false;
+      let iniciando = false;
 
-      iniciado = true;
-      hotspot.style.display = "none";
+      /*
+        Ajusta cada imagem para caber na tela sem distorção.
+        Os botões ficam dentro do mesmo palco da imagem.
+      */
+      function ajustarPalco(imagem, palco) {
+        if (!imagem.naturalWidth || !imagem.naturalHeight) {
+          return;
+        }
 
-      music.volume = 0.7;
+        const proporcao = imagem.naturalWidth / imagem.naturalHeight;
+        const larguraTela = document.documentElement.clientWidth;
+        const alturaTela = window.innerHeight;
 
-      music.play().catch(function (erro) {
-        console.warn("Não foi possível iniciar a música:", erro);
+        let largura = larguraTela;
+        let altura = largura / proporcao;
+
+        if (altura > alturaTela) {
+          altura = alturaTela;
+          largura = altura * proporcao;
+        }
+
+        palco.style.width = largura + "px";
+        palco.style.height = altura + "px";
+      }
+
+      function ajustarTodasImagens() {
+        ajustarPalco(imagem1, palco1);
+        ajustarPalco(imagem2, palco2);
+        ajustarPalco(imagemVestimenta, palcoVestimenta);
+      }
+
+      [imagem1, imagem2, imagemVestimenta].forEach(function (imagem) {
+        imagem.addEventListener("load", ajustarTodasImagens);
       });
 
-      video.currentTime = 0;
-
-      video.play().catch(function (erro) {
-        console.error("Não foi possível iniciar o vídeo:", erro);
-        iniciado = false;
-        hotspot.style.display = "block";
+      window.addEventListener("resize", ajustarTodasImagens);
+      window.addEventListener("orientationchange", function () {
+        window.setTimeout(ajustarTodasImagens, 250);
       });
-    }
 
-    hotspot.addEventListener("click", iniciarConvite);
-
-    hotspot.addEventListener("keydown", function (evento) {
-      if (evento.key === "Enter" || evento.key === " ") {
-        evento.preventDefault();
-        iniciarConvite();
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", ajustarTodasImagens);
       }
-    });
 
-    video.addEventListener("ended", function () {
-      mostrarTela(screen1);
-    });
+      ajustarTodasImagens();
 
-    function entrarNoConvite() {
-      mostrarTela(screen2);
-    }
+      function mostrarTela(tela) {
+        videoContainer.style.display = "none";
+        screen1.style.display = "none";
+        screen2.style.display = "none";
+        screenVestimenta.style.display = "none";
 
-    screen1Click.addEventListener("click", entrarNoConvite);
-
-    screen1Click.addEventListener("keydown", function (evento) {
-      if (evento.key === "Enter" || evento.key === " ") {
-        evento.preventDefault();
-        entrarNoConvite();
+        tela.style.display = "block";
+        ajustarTodasImagens();
       }
-    });
 
-    botaoVestimenta.addEventListener("click", function () {
-      mostrarTela(screenVestimenta);
-    });
+      /*
+        A reprodução é iniciada somente após o toque da pessoa,
+        para respeitar as regras de mídia do Safari no iPhone.
+      */
+      async function iniciarConvite() {
+        if (iniciado || iniciando) return;
 
-    botaoVoltar.addEventListener("click", function () {
-      mostrarTela(screen2);
-    });
+        iniciando = true;
+        hotspot.disabled = true;
+
+        try {
+          music.volume = 0.7;
+
+          const promessaMusica = music.play().catch(function (erro) {
+            console.warn("A música não iniciou:", erro);
+          });
+
+          video.currentTime = 0;
+
+          await video.play();
+
+          iniciado = true;
+          hotspot.style.display = "none";
+
+          await promessaMusica;
+        } catch (erro) {
+          console.error("Não foi possível iniciar o vídeo:", erro);
+
+          hotspot.disabled = false;
+          hotspot.style.display = "block";
+        } finally {
+          iniciando = false;
+        }
+      }
+
+      hotspot.addEventListener("click", iniciarConvite);
+
+      video.addEventListener("ended", function () {
+        mostrarTela(screen1);
+      });
+
+      botaoAvancar.addEventListener("click", function () {
+        mostrarTela(screen2);
+      });
+
+      botaoVestimenta.addEventListener("click", function () {
+        mostrarTela(screenVestimenta);
+      });
+
+      botaoVoltar.addEventListener("click", function () {
+        mostrarTela(screen2);
+      });
+
+      /*
+        Não reinicia a música ao trocar de tela.
+        Se o Safari interromper o áudio ao voltar de uma pausa,
+        tenta retomá-lo após a próxima interação do usuário.
+      */
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden && iniciado && music.paused) {
+          music.play().catch(function (erro) {
+            console.warn("Toque na página para retomar a música:", erro);
+          });
+        }
+      });
+
+      document.addEventListener("touchend", function retomarAudio() {
+        if (iniciado && music.paused) {
+          music.play().catch(function () {});
+        }
+      }, { passive: true });
+    })();
   </script>
 
 </body>
